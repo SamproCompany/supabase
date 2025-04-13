@@ -3,25 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <title>Supabase Classic Script</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 </head>
 <body>
+  <!-- Ładujemy bibliotekę jako pierwszy -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+  <!-- Drugi <script> czeka, aż biblioteka się załaduje -->
   <script>
-    const SUPABASE_URL = 'https://xjdblaintcryjfgzfbdi.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhqZGJsYWludGNyeWpmZ3pmYmRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI2NjgwMjMsImV4cCI6MjA1ODI0NDAyM30.XDHxda0vk1oqiEEPlapKEJq69wkagqICGwTfsikFEmA';
+    // Poczekamy aż wszystko się załaduje
+    window.addEventListener('load', async () => {
+      const SUPABASE_URL = 'https://xjdblaintcryjfgzfbdi.supabase.co';
+      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhqZGJsYWludGNyeWpmZ3pmYmRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI2NjgwMjMsImV4cCI6MjA1ODI0NDAyM30.XDHxda0vk1oqiEEPlapKEJq69wkagqICGwTfsikFEmA';
 
-    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    async function insertUser() {
-      const { data, error } = await supabase
-        .from('id')
-        .insert([{ id: '12345' }]);
+      async function insertUser() {
+        const { data, error } = await supabaseClient
+          .from('id')
+          .insert([{ id: '12345' }]);
 
-      console.log('Data:', data);
-      console.log('Error:', error);
-    }
+        console.log('Data:', data);
+        console.log('Error:', error);
+      }
 
-    insertUser();
+      insertUser();
+    });
   </script>
 </body>
 </html>
