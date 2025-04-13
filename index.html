@@ -15,7 +15,7 @@ const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 async function insertUser() {
     const { data, error } = await supabase
-    .from('id')
+    .from('id1')
     .insert([{ id: '12345' }]);
 }
 console.log("HJdfhjkfdsjk")
