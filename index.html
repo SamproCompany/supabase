@@ -9,32 +9,36 @@
 
   <script>
     window.addEventListener('load', async () => {
-      const SUPABASE_URL = 'https://xjdblaintcryjfgzfbdi.supabase.co';
-      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhqZGJsYWludGNyeWpmZ3pmYmRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI2NjgwMjMsImV4cCI6MjA1ODI0NDAyM30.XDHxda0vk1oqiEEPlapKEJq69wkagqICGwTfsikFEmA';
+    const SUPABASE_URL = 'https://xjdblaintcryjfgzfbdi.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhqZGJsYWludGNyeWpmZ3pmYmRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI2NjgwMjMsImV4cCI6MjA1ODI0NDAyM30.XDHxda0vk1oqiEEPlapKEJq69wkagqICGwTfsikFEmA';
 
-      const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-      async function getCurrentVotes() {
-        const { data, error } = await supabaseClient
-          .from('candidate_1')
-          .select('votes')
-          .limit(1)
-          .single();
-        return data.votes;
-      }
+    async function getCurrentVotes() {
+      const { data, error } = await supabaseClient
+        .from('candidate_1')
+        .select('votes')
+        .limit(1)
+        .single(); // pobierze pierwszy rekord
+      return data.votes;
+    }
 
-      async function insertUser() {
-        const currentVotes = await getCurrentVotes();
+    async function updateVotes() {
+      const currentVotes = await getCurrentVotes();
 
-        const { data, error } = await supabaseClient
-          .from('candidate_1')
-          .update({ votes: currentVotes + 1 }) // nie [] tylko {}
-          .eq('votes', currentVotes); // musisz podać ID rekordu do aktualizacji
+      if (currentVotes === null) return;
 
-          console.log('Zaktualizowano:', data);
-      }
+      const { data, error } = await supabaseClient
+        .from('candidate_1')
+        .update({ votes: currentVotes + 1 })
+        .eq('votes', currentVotes); // upewniamy się, że aktualizujemy dokładnie ten rekord
 
-      insertUser();
+
+        console.log('Zaktualizowano:', data);
+    
+    }
+
+    updateVotes();
     });
   </script>
 </body>
