@@ -5,30 +5,36 @@
   <title>Supabase Classic Script</title>
 </head>
 <body>
-  <!-- Ładujemy bibliotekę jako pierwszy -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
-  <!-- Drugi <script> czeka, aż biblioteka się załaduje -->
   <script>
-    // Poczekamy aż wszystko się załaduje
     window.addEventListener('load', async () => {
       const SUPABASE_URL = 'https://xjdblaintcryjfgzfbdi.supabase.co';
       const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhqZGJsYWludGNyeWpmZ3pmYmRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI2NjgwMjMsImV4cCI6MjA1ODI0NDAyM30.XDHxda0vk1oqiEEPlapKEJq69wkagqICGwTfsikFEmA';
-        
+
       const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-   
-      async function insertUser() {
-        
+
+      async function getCurrentVotes() {
         const { data, error } = await supabaseClient
           .from('candidate_1')
-          .insert({ votes: 1, votes: 0 });
-
-        console.log('Data:', data);
-        console.log('Error:', error);
+          .select('votes')
+          .eq('id', 1)
+          .single();
+        return data.votes;
       }
-      
-       insertUser();
 
+      async function insertUser() {
+        const currentVotes = await getCurrentVotes();
+
+        const { data, error } = await supabaseClient
+          .from('candidate_1')
+          .update({ votes: currentVotes + 1 }) // nie [] tylko {}
+          .eq('id', 1); // musisz podać ID rekordu do aktualizacji
+
+          console.log('Zaktualizowano:', data);
+      }
+
+      insertUser();
     });
   </script>
 </body>
