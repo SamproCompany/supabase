@@ -2,35 +2,34 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Supabase Voting</title>
+  <title>Supabase User Insert</title>
 </head>
 <body>
+  <button onclick="insertUserData()">Insert User Data</button>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <button onclick="Insert()"></button>
   <script>
-      const SUPABASE_URL = 'https://xjdblaintcryjfgzfbdi.supabase.co';
+    const SUPABASE_URL = 'https://xjdblaintcryjfgzfbdi.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhqZGJsYWludGNyeWpmZ3pmYmRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI2NjgwMjMsImV4cCI6MjA1ODI0NDAyM30.XDHxda0vk1oqiEEPlapKEJq69wkagqICGwTfsikFEmA';
     const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    async function insertData() {
+    async function insertUserData() {
       const { data, error } = await supabase
-        .from('files')  // Wybierz tabelę
+        .from('users')  // Wybierz tabelę 'users'
         .insert([
           { 
-            name: 'example_file.txt', 
-            created_at: new Date() 
+            user: 'john_doe',    // Kolumna 'user'
+            password: 'supersecret123', // Kolumna 'password'
+            created_at: new Date()  // Kolumna, np. do zapisu daty utworzenia
           }
         ]);
 
       if (error) {
         console.error('Błąd:', error);
       } else {
-        console.log('Wstawiono dane:', data);
+        console.log('Wstawiono dane użytkownika:', data);
       }
     }
-
-insertData()
-
   </script>
 </body>
 </html>
