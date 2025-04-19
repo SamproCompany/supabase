@@ -19,8 +19,8 @@
     
       async function insertUser() {
         const { data, error } = await supabaseClient
-          .from('id')
-          .insert([{ candidate1: 0 }]);
+          .from('candidate_1_votes')
+          .insert([{ candidate_1_votes: 0 }]);
 
         console.log('Data:', data);
         console.log('Error:', error);
