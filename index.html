@@ -12,31 +12,34 @@
       const SUPABASE_URL = 'https://xjdblaintcryjfgzfbdi.supabase.co';
       const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhqZGJsYWludGNyeWpmZ3pmYmRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI2NjgwMjMsImV4cCI6MjA1ODI0NDAyM30.XDHxda0vk1oqiEEPlapKEJq69wkagqICGwTfsikFEmA';
 
-      const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
       async function updateVotes() {
-        const { data: selectData, error: selectError } = await supabaseClient
+        // Pobieramy głosy z rekordu o id = 1
+        const { data: candidate, error: selectError } = await supabase
           .from('candidate_1')
-          .select('id, votes') // potrzebujemy id, żeby później zaktualizować
-          .limit(1)
+          .select('votes')
+          .eq('id', 1)
           .single();
 
-        if (selectError || !selectData) {
+        if (selectError || !candidate) {
           console.error('Błąd przy pobieraniu:', selectError);
           return;
         }
 
-        const { id, votes } = selectData;
+        const currentVotes = candidate.votes;
 
-        const { data: updateData, error: updateError } = await supabaseClient
+        // Aktualizujemy liczbę głosów
+        const { data: updateData, error: updateError } = await supabase
           .from('candidate_1')
-          .update({ votes: votes + 1 })
-          .eq('id', id); // aktualizujemy rekord po ID – bezpiecznie!
+          .update({ votes: currentVotes + 1 })
+          .eq('id', 1);
 
         if (updateError) {
           console.error('Błąd przy aktualizacji:', updateError);
         } else {
-          console.log('Zaktualizowano:', updateData);
+          console.log('Zaktualizowano głosy:', updateData);
+          alert('Dziękujemy za głos!');
         }
       }
 
