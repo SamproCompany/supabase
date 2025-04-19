@@ -25,9 +25,9 @@
         return data.votes;  
       }
       async function insertUser() {
-        
+        const currentVotes = await Currentvotes();
         const { data, error } = await supabaseClient
-           const currentVotes = await Currentvotes();
+           
           .from('candidate_1')
           .update([{ votes: currentVotes + 1 }]);
 
@@ -36,6 +36,7 @@
       }
       
       await insertUser();
+
     });
   </script>
 </body>
