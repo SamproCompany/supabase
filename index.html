@@ -21,7 +21,7 @@
         
         const { data, error } = await supabaseClient
           .from('candidate_1')
-          .insert({ id: 1, votes: 0 });
+          .insert({ votes: 1, votes: 0 });
 
         console.log('Data:', data);
         console.log('Error:', error);
