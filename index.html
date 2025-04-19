@@ -9,36 +9,38 @@
 
   <script>
     window.addEventListener('load', async () => {
-    const SUPABASE_URL = 'https://xjdblaintcryjfgzfbdi.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhqZGJsYWludGNyeWpmZ3pmYmRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI2NjgwMjMsImV4cCI6MjA1ODI0NDAyM30.XDHxda0vk1oqiEEPlapKEJq69wkagqICGwTfsikFEmA';
+      const SUPABASE_URL = 'https://xjdblaintcryjfgzfbdi.supabase.co';
+      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhqZGJsYWludGNyeWpmZ3pmYmRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI2NjgwMjMsImV4cCI6MjA1ODI0NDAyM30.XDHxda0vk1oqiEEPlapKEJq69wkagqICGwTfsikFEmA';
 
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    async function getCurrentVotes() {
-      const { data, error } = await supabaseClient
-        .from('candidate_1')
-        .select('votes')
-        .limit(1)
-        .single(); // pobierze pierwszy rekord
-      return data.votes;
-    }
+      async function updateVotes() {
+        const { data: selectData, error: selectError } = await supabaseClient
+          .from('candidate_1')
+          .select('id, votes') // potrzebujemy id, żeby później zaktualizować
+          .limit(1)
+          .single();
 
-    async function updateVotes() {
-      const currentVotes = await getCurrentVotes();
+        if (selectError || !selectData) {
+          console.error('Błąd przy pobieraniu:', selectError);
+          return;
+        }
 
-      if (currentVotes === null) return;
+        const { id, votes } = selectData;
 
-      const { data, error } = await supabaseClient
-        .from('candidate_1')
-        .update({ votes: currentVotes + 1 })
-        .eq('votes', currentVotes); // upewniamy się, że aktualizujemy dokładnie ten rekord
+        const { data: updateData, error: updateError } = await supabaseClient
+          .from('candidate_1')
+          .update({ votes: votes + 1 })
+          .eq('id', id); // aktualizujemy rekord po ID – bezpiecznie!
 
+        if (updateError) {
+          console.error('Błąd przy aktualizacji:', updateError);
+        } else {
+          console.log('Zaktualizowano:', updateData);
+        }
+      }
 
-        console.log('Zaktualizowano:', data);
-    
-    }
-
-    updateVotes();
+      updateVotes();
     });
   </script>
 </body>
