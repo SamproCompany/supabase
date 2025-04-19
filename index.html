@@ -17,14 +17,12 @@
         
       const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
       async function Currentvotes(){
-
         const { data, error } = await supabaseClient
           .from('candidate_1')
           .select('votes')
           .eq('id', 1)
           .single();
-        return data.votes      
-
+        return data.votes;  
       }
       async function insertUser() {
         
@@ -37,7 +35,7 @@
         console.log('Error:', error);
       }
       
-      insertUser();
+      await insertUser();
     });
   </script>
 </body>
