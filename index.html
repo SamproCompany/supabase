@@ -14,18 +14,29 @@
     window.addEventListener('load', async () => {
       const SUPABASE_URL = 'https://xjdblaintcryjfgzfbdi.supabase.co';
       const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhqZGJsYWludGNyeWpmZ3pmYmRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI2NjgwMjMsImV4cCI6MjA1ODI0NDAyM30.XDHxda0vk1oqiEEPlapKEJq69wkagqICGwTfsikFEmA';
-
+        
       const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    
-      async function insertUser() {
+      async function Currentvotes(){
+
         const { data, error } = await supabaseClient
           .from('candidate_1')
-          .update([{ votes: votes + 1 }]);
+          .select('votes')
+          .eq('id', 1)
+          .single();
+        return data.votes      
+
+      }
+      async function insertUser() {
+        
+        const { data, error } = await supabaseClient
+           const currentVotes = await Currentvotes();
+          .from('candidate_1')
+          .update([{ votes: currentVotes + 1 }]);
 
         console.log('Data:', data);
         console.log('Error:', error);
       }
-
+      
       insertUser();
     });
   </script>
