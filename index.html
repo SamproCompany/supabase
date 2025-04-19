@@ -6,50 +6,31 @@
 </head>
 <body>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-
+  <button onclick="Insert()"></button>
   <script>
-    window.addEventListener('load', async () => {
       const SUPABASE_URL = 'https://xjdblaintcryjfgzfbdi.supabase.co';
-      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhqZGJsYWludGNyeWpmZ3pmYmRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI2NjgwMjMsImV4cCI6MjA1ODI0NDAyM30.XDHxda0vk1oqiEEPlapKEJq69wkagqICGwTfsikFEmA';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhqZGJsYWludGNyeWpmZ3pmYmRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI2NjgwMjMsImV4cCI6MjA1ODI0NDAyM30.XDHxda0vk1oqiEEPlapKEJq69wkagqICGwTfsikFEmA';
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-      const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-      async function updateVotes() {
-        try {
-          // Pobierz obecne głosy
-          const { data: candidate, error: selectError } = await supabase
-            .from('candidate_1')
-            .select('votes')
-            .eq('id', 1)
-            .single();
-
-          if (selectError || !candidate) {
-            console.error('Błąd przy pobieraniu:', selectError);
-            return;
+    async function insertData() {
+      const { data, error } = await supabase
+        .from('files')  // Wybierz tabelę
+        .insert([
+          { 
+            name: 'example_file.txt', 
+            created_at: new Date() 
           }
+        ]);
 
-          const currentVotes = candidate.votes;
-
-          // Zaktualizuj głosy
-          const { data: updateData, error: updateError } = await supabase
-            .from('candidate_1')
-            .update({ votes: currentVotes + 1 })
-            .eq('id', 1);
-
-          if (updateError) {
-            console.error('Błąd przy aktualizacji:', updateError);
-          } else {
-            console.log('Zaktualizowano głosy:', updateData);
-            alert('Dziękujemy za głos!');
-          }
-
-        } catch (err) {
-          console.error('Nieoczekiwany błąd:', err);
-        }
+      if (error) {
+        console.error('Błąd:', error);
+      } else {
+        console.log('Wstawiono dane:', data);
       }
+    }
 
-      updateVotes();
-    });
+insertData()
+
   </script>
 </body>
 </html>
