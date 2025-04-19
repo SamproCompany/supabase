@@ -18,7 +18,7 @@
         const { data, error } = await supabaseClient
           .from('candidate_1')
           .select('votes')
-          .eq('votes', 1)
+          .eq('votes', 0)
           .single();
         return data.votes;
       }
@@ -29,7 +29,7 @@
         const { data, error } = await supabaseClient
           .from('candidate_1')
           .update({ votes: currentVotes + 1 }) // nie [] tylko {}
-          .eq('votes', 1); // musisz podać ID rekordu do aktualizacji
+          .eq('votes', 0); // musisz podać ID rekordu do aktualizacji
 
           console.log('Zaktualizowano:', data);
       }
