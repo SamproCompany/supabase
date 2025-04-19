@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Supabase Classic Script</title>
+  <title>Supabase Voting</title>
 </head>
 <body>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
@@ -15,31 +15,36 @@
       const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
       async function updateVotes() {
-        // Pobieramy głosy z rekordu o id = 1
-        const { data: candidate, error: selectError } = await supabase
-          .from('candidate_1')
-          .select('votes')
-          .eq('id', 1)
-          .single();
+        try {
+          // Pobierz obecne głosy
+          const { data: candidate, error: selectError } = await supabase
+            .from('candidate_1')
+            .select('votes')
+            .eq('id', 1)
+            .single();
 
-        if (selectError || !candidate) {
-          console.error('Błąd przy pobieraniu:', selectError);
-          return;
-        }
+          if (selectError || !candidate) {
+            console.error('Błąd przy pobieraniu:', selectError);
+            return;
+          }
 
-        const currentVotes = candidate.votes;
+          const currentVotes = candidate.votes;
 
-        // Aktualizujemy liczbę głosów
-        const { data: updateData, error: updateError } = await supabase
-          .from('candidate_1')
-          .update({ votes: currentVotes + 1 })
-          .eq('id', 1);
+          // Zaktualizuj głosy
+          const { data: updateData, error: updateError } = await supabase
+            .from('candidate_1')
+            .update({ votes: currentVotes + 1 })
+            .eq('id', 1);
 
-        if (updateError) {
-          console.error('Błąd przy aktualizacji:', updateError);
-        } else {
-          console.log('Zaktualizowano głosy:', updateData);
-          alert('Dziękujemy za głos!');
+          if (updateError) {
+            console.error('Błąd przy aktualizacji:', updateError);
+          } else {
+            console.log('Zaktualizowano głosy:', updateData);
+            alert('Dziękujemy za głos!');
+          }
+
+        } catch (err) {
+          console.error('Nieoczekiwany błąd:', err);
         }
       }
 
