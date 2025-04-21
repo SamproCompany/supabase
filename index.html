@@ -19,12 +19,22 @@
       host += "@";
       host += document.getElementById("password").value;
 
-      const response = await fetch("https://database.intonowac-tkane1q.workers.dev", {
+      try {
+        const response = await fetch("https://database.intonowac-tkane1q.workers.dev/", {
           method: "POST",
           headers: { "Content-Type": "text/plain" },
           body: host
         });
-      alert(response);
+
+        const result = await response.text();
+        console.log("Odpowiedź z serwera:", result);
+        alert("Użytkownik został dodany!");
+
+      } catch (err) {
+        console.error("Błąd przy wysyłaniu:", err);
+        alert("Wystąpił błąd!");
+      }
+    }
     }
   </script>
 </body>
