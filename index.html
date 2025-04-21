@@ -13,6 +13,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script>
     async function insertUserData(){
+      alert("kjflsd")
       let host = "";
       host += document.getElementById("user").value;
       host += "@";
@@ -23,6 +24,7 @@
           headers: { "Content-Type": "text/plain" },
           body: host
         });
+      alert(response);
     }
   </script>
 </body>
