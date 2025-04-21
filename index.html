@@ -18,7 +18,7 @@
         const password = document.getElementById("password").value;
 
         const host = `${user}@${password}`;
-        console.log(host)
+        console.log(host);
         try {
           const response = await fetch("https://database.intonowac-tkane1q.workers.dev/", {
             method: "POST",
