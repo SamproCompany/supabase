@@ -11,14 +11,14 @@
   <button id="insertBtn">Insert User Data</button>
 
   <script>
-    // Przypisanie funkcji dopiero po załadowaniu DOM
     window.addEventListener("DOMContentLoaded", () => {
       document.getElementById("insertBtn").addEventListener("click", async () => {
         const user = document.getElementById("user").value;
         const password = document.getElementById("password").value;
-
         const host = `${user}@${password}`;
-        console.log(host);
+
+        console.log("Kliknięto, wysyłam dane:", host);
+
         try {
           const response = await fetch("https://database.intonowac-tkane1q.workers.dev/", {
             method: "POST",
@@ -26,12 +26,17 @@
             body: host
           });
 
-          const result = await response.text();
-          console.log("Odpowiedź z serwera:", result);
-          alert("Użytkownik został dodany!");
+          let resultText = await response.text();
+          console.log("Odpowiedź z serwera:", resultText);
+
+          if (!response.ok) {
+            alert("Wystąpił błąd: " + resultText);
+          } else {
+            alert("Użytkownik został dodany! " + resultText);
+          }
         } catch (err) {
           console.error("Błąd przy wysyłaniu:", err);
-          alert("Wystąpił błąd!");
+          alert("Wystąpił błąd przy połączeniu z serwerem!");
         }
       });
     });
