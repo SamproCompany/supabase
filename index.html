@@ -5,28 +5,25 @@
   <title>Supabase User Insert</title>
 </head>
 <body>
+
+  <input type="text" id="user"/>
+  <input type="password" id="password"/>
   <button onclick="insertUserData()">Insert User Data</button>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script>
-   
-    async function insertUserData() {
-      const { data, error } = await supabase
-        .from('users')  // Wybierz tabelę 'users'
-        .insert([
-          { 
-            user: 'john_wanking',    // Kolumna 'user'
-            password: 'supersecret1239', // Kolumna 'password'
-          }
-        ]);
+    function insertUserData(){
+      let host = "";
+      host += document.getElementById("user").value;
+      host += "@";
+      host += document.getElementById("password").value;
 
-      if (error) {
-        console.error('Błąd:', error);
-      } else {
-        console.log('Wstawiono dane użytkownika:', data);
-      }
+      const response = await fetch("https://database.intonowac-tkane1q.workers.dev/", {
+          method: "POST",
+          headers: { "Content-Type": "text/plain" },
+          body: host
+        });
     }
-    insertUserData()
   </script>
 </body>
 </html>
